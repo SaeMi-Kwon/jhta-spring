@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>main.html</title>
+</head>
+<body>
+<h1>메인페이지 입니다!</h1>
+<form method="post" th:action="@{/main}">
+    아이디 <input type="text" name="username"><br>
+    비밀번호 <input type="password" name="password"><br>
+    <input type="submit" value="전송">
+</form>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>member/result.html</title>
+</head>
+<body>
+    <h1>요청작업 완료!</h1>
+    <div>
+        <h3>수정된 회원정보</h3>
+        <!-- @ModelAttribute MembersDTO로 담은 값은 꺼낼때는 클래스명(맨앞 소문자)으로 해서 꺼낸다 -->
+        <div th:text="'번호:' + ${membersDTO.num}"></div>
+        <div th:text="|이름 : ${membersDTO.name}|"></div>
+        <div th:text="|전화번호 : ${membersDTO.phone}|"></div>
+        <div th:text="|주소 : ${membersDTO.addr}|"></div>
+    </div>
+    <a th:href="@{/}">홈</a>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- ////////////////// 스프링 빈 객체 설정 //////////////-->
+
+    <!-- 디폴트 생성자로 객체 생성 -->
+    <bean class="di01.Person" name="person">
+        <!-- setter호출 -->
+        <property name="name" value="홍길동" />
+        <property name="age" value="10"/>
+    </bean>
+
+    <!-- 파라미터 갖는 생성자로 객체 생성 -->
+    <bean class="di01.Person" name="person1">
+        <constructor-arg index="0" value="스프링"/>
+        <constructor-arg index="1" value="20"/>
+    </bean>
+
+    <!--MembersDao 생성하기(디폴트 생성자) -->
+    <bean class="di01.MembersDao" name="membersDao"/>
+
+    <!-- MembersController생성하기 (membersDao주입) -->
+    <bean class="di01.MembersController" name="controller">
+        <!-- 멤버변수 dao에 위에서 생성된 membersDao객체를 주입해라
+        (setter메소드가 호출되면서 객체가 주입됨) -->
+        <property name="dao" ref="membersDao"/>
+    </bean>
+
+    <!-- //////////////////////////////////////////////////// -->
+</beans>

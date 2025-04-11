@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>member/list.html</title>
+</head>
+<body>
+    <h1>회원목록 리스트</h1>
+    <table border="1px solid black" width="600">
+        <tr>
+            <th>번호</th><th>이름</th><th>전화번호</th><th>주소</th><th>등록일</th>
+            <th>삭제</th><th>수정</th>
+        </tr>
+        <tr th:each="m : ${list}">
+            <td th:text="${m.num}"></td>
+            <td th:text="${m.name}"></td>
+            <td>[[${m.phone}]]</td>
+            <td>[[${m.addr}]]</td>
+            <td th:text="${#dates.format(m.regdate,'yyyy-MM-dd')}"/></td>
+            <!-- 삭제후에 result.html로 이동 -->
+            <td><a th:href="@{/member/del(num=${m.num})}">삭제</a></td>
+            <!-- 수정 -->
+            <td><a th:href="@{/member/update(num=${m.num})}">수정</a></td>
+        </tr>
+    </table>
+    <a th:href="@{/}">홈으로 이동</a>
+</body>
+</html>

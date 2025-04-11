@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- OracleDao생성
+    <bean class="di03.OracleDao" name="dao"/>
+    -->
+    <!-- MysqlDao생성 -->
+    <bean class="di03.MysqlDao" name="dao"/>
+
+    <!-- OracleDao를 주입받는 BoardController생성(setter) -->
+    <bean class="di03.BoardController" name="controller">
+        <property name="dao" ref="dao"/>
+    </bean>
+</beans>

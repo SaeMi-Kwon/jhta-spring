@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+    <!-- 핵심기능 -->
+    <bean name="membersDaoImpl" class="aop01.MembersDaoImpl"/>
+    <!-- 공통기능 -->
+    <bean name="advice" class="aop02.LogAdvice"/>
+
+    <!-- aop설정(결합) -->
+    <aop:config>
+        <aop:aspect ref="advice">
+            <aop:pointcut id="pointCut" expression="execution(public * aop01..*(..))"/>
+            <!-- <aop:around ../> ==> 메소드 실행전후에 advice가 결합됨 -->
+            <aop:around method="around" pointcut-ref="pointCut"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>

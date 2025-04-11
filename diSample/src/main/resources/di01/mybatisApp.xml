@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 마이바티스 설정단계
+        1.DataSource 설정 - DB정보설정
+        2.SqlSessionFactory 설정 => 스프링에서는 SqlSessionFactoryBean
+        3.SqlSession 설정 => 스프링에서는 SqlSessionTemplate
+        4.DAO설정
+    -->
+
+    <!-- init-method="abcd" : 생성될때 해야할일이 있을때 호출할 메소드를 넣어준다.
+         destroy-method="close" : 소멸될때 해야할일이 있을때 호출할 메소드를 넣어준다 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"  destroy-method="close">
+        <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+        <property name="username" value="c##scott"/>
+        <property name="password" value="tiger"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 읽어올 Mapper파일 설정 -->
+        <property name="mapperLocations" value="classpath*:mapper/MembersMapper.xml"/>
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="membersDao" class="di07_mybatis.MembersDao">
+        <property name="sqlSession" ref="sqlSession"/>
+    </bean>
+</beans>

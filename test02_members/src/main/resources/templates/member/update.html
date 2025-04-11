@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>member/update.html</title>
+</head>
+<body>
+    <h1>회원정보 수정하기</h1>
+    <form method="post" th:action="@{/member/update}" th:object="${dto}">
+        회원번호 <input type="text" name="num" th:field="*{num}" readonly><br>
+        이름 <input type="text" name="name" th:field="*{name}"><br>
+        전화번호 <input type="text" name="phone" th:field="*{phone}"><br>
+        주소 <input type="text" name="addr" th:field="*{addr}"><br>
+        가입일 <input type="text" name="regdate" th:field="*{regdate}" disabled><br>
+        <input type="submit" value="수정">
+    </form>
+</body>
+</html>

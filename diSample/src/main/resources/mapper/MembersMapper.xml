@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.MembersMapper">
+	<!-- id를 통해서 호출하니깐 반드시 id를 적어준다.    -->
+	<insert id="insert" parameterType="members.dto.MembersDto">
+		insert into members values(#{num},#{name},#{phone},#{addr},sysdate)
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from members where num=#{num}
+	</delete>
+
+	<!-- update 구문 만들어 보세요 -->
+	<update id="update" parameterType="members.dto.MembersDto">
+		update members set name=#{name},phone=#{phone},addr=#{addr} where num=#{num}
+	</update>
+	
+	<!-- select는 조회된 결과를 어떤 클래스에 담을건지 resultType속성으로 지정한다. -->
+	<select id="getinfo" parameterType="int" resultType="members.dto.MembersDto">
+		select * from members where num=#{num}
+	</select>
+	
+	<select id="selectAll" resultType="members.dto.MembersDto">
+		select * from members
+	</select>
+</mapper>
