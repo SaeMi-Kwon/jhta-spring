@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>member/board.html</title>
+</head>
+<body>
+    <h1>게시판페이지....</h1>
+    <!-- 게시글 목록 출력 -->
+    <ul>
+        <li th:each="board : ${boards}" th:text="${board}"></li>
+    </ul>
+
+
+</body>
+</html>

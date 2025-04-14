@@ -38,5 +38,7 @@ public class MemberService {
         return mapper.totalCount();
     }
 
+    public MemberDTO isMember(HashMap<String,Object> map){ return mapper.isMember(map); }
+
 
 }

@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>member/insertForm</title>
+    <style>
+        form span{font-size: 0.8em;color: red;}
+    </style>
 </head>
 <body>
     <h1>회원 등록</h1>
-    <form method="post" th:action="@{/member/insert}">
-        아이디 <input type="text" name="id"><br>
-        비밀번호 <input type="password" name="pwd"><br>
-        나이 <input type="text" name="age"><br>
-        이메일 <input type="email" name="email"><br>
+    <form method="post" th:action="@{/member/insert}" th:object="${memberDTO}">
+        아이디 <input type="text" th:field="*{id}">
+        <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></span><br>
+        비밀번호 <input type="password" th:field="*{pwd}">
+        <span th:if="${#fields.hasErrors('pwd')}" th:errors="*{pwd}"></span><br>
+
+        나이 <input type="text" name="age">
+        <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span><br>
+        이메일 <input type="text" name="email">
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span><br>
         <input type="submit" value="등록">
     </form>
 </body>

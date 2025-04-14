@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>요청작업 완료!</h1>
+<div>[[${result}]]</div>
+
+<div>
+    <div th:text="'아이디 :' + ${memberDTO.id}"></div>
+    <div th:text="|비밀번호 : ${memberDTO.pwd}|"></div>
+    <div th:text="|이메일 : ${memberDTO.email}|"></div>
+    <div th:text="|나이 : ${memberDTO.age}|"></div>
+</div>
+<a th:href="@{/}">홈</a>
+</body>
+</html>
