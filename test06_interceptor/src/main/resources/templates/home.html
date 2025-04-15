@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>home.html</title>
+</head>
+<body>
+	<h1>Home!!</h1>
+	<ul>
+		<li th:if="${session.id==null}">
+			<a th:href="@{/member/login}">로그인</a>
+		</li>
+		<li th:unless="${session.id==null}">
+			<span th:text="${session.id}"></span>
+			<a th:href="@{/member/logout}">로그아웃</a>
+		</li>
+		<!-- 인터셉터를 사용해서 로그인한 사용자만 볼수 있도록 해보세요 -->
+		<li><a th:href="@{/item/list1}">제품1</a></li>
+		<li><a th:href="@{/item/list2}">제품2</a></li>
+	</ul>
+</body>
+</html>

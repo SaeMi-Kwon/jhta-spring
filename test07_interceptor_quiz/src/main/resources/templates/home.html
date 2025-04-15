@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>home.html</title>
+</head>
+<body>
+	<h1>Home!!</h1>
+	<ul>
+		<li th:if="${session.id==null}">
+			<a th:href="@{/member/login}">로그인</a>
+		</li>
+		<li th:unless="${session.id==null}">
+			<span th:text="${session.id}"></span>
+			<a th:href="@{/member/logout}">로그아웃</a>
+		</li>
+		<!-- 로그인한 사용자가 접근 할 수 있는 경로 -->
+		<li><a th:href="@{/item/list1}">제품1</a></li>
+		<li><a th:href="@{/item/list2}">제품2</a></li>
+
+		<!-- 로그인한 사용자 중에 ADMIN권한이 있는 사용자가 접근 할 수 있는 경우 -->
+		<li><a th:href="@{/admin/main}">관리자페이지</a></li>
+
+	</ul>
+</body>
+</html>
