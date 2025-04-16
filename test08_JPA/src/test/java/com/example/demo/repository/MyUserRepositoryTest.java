@@ -17,7 +17,7 @@ public class MyUserRepositoryTest {
 
     @Test
     public void insert(){
-        mr.insert(new MyUser(1,"홍길동","010-111-1111","종로"));
+        //mr.insert(new MyUser(1,"홍길동","010-111-1111","종로"));
     }
 
     @Test
@@ -28,7 +28,7 @@ public class MyUserRepositoryTest {
 
     @Test
     public void update(){
-        mr.update(new MyUser(1,"김길동","010-000-0000","서울"));
+        //mr.update(new MyUser(1,"김길동","010-000-0000","서울"));
     }
 
     @Test

@@ -10,7 +10,7 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session= request.getSession();
+        HttpSession session= request.getSession(false);
 
 //        String role = (String) session.getAttribute("role");
 //        if(session != null && session.getAttribute("id") !=null && role.equals("MEMBER")){

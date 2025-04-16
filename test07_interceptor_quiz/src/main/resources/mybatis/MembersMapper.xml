@@ -5,7 +5,7 @@
 <mapper namespace="com.example.demo.mapper.MembersMapper">
 
     <select id="isMemberRole" parameterType="hashmap" resultType="MembersDTO">
-        select id,role from members
+        select * from members
         where id=#{id} and pwd=#{pwd}
     </select>
 

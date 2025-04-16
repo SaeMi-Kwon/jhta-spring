@@ -21,7 +21,7 @@ public class MyUserRepositoryJPATest {
     @Test
     public void insert(){
         for(int i=1;i<=10;i++){
-            MyUser mu=mr.save(new MyUser(i,"홍길동","010-222-2222","강남"));
+            MyUser mu=mr.save(new MyUser(i,"홍길동"+i,"010-222-2222","강남",null,null));
             System.out.println("mu ==> " + mu);
         }
     }
@@ -44,9 +44,8 @@ public class MyUserRepositoryJPATest {
 
         if(!optionalMyUser.isEmpty()) {
             MyUser mu = optionalMyUser.get();
-            mu.setName("길동이");
+            mu.setName("이길동");
             mu.setPhone("010-202-2020");
-            mu.setAddr("대구");
 
         }else {
             System.out.println("수정실패!");
@@ -60,8 +59,7 @@ public class MyUserRepositoryJPATest {
 
     @Test
     public void selectAll(){
-        List<MyUser> list =mr.findAll();
-        list.forEach(mu->{
+        mr.findAll().forEach(mu->{
             System.out.println(mu);
         });
     }
