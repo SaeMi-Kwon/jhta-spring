@@ -57,7 +57,9 @@ public class StudentService {
 
     public void delete(int snum){
         sr.deleteById(snum);
-//        Student student = studentDto.toEntity();
+
+//        Optional<Student> stu = sr.findById(snum);
+//        Student student = stu.get();
 //        sr.delete(student);
     }
 
