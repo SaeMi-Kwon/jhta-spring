@@ -1,10 +1,16 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.BoardDto;
 import com.example.demo.dto.MemberDto;
+import com.example.demo.dto.PageResultDto;
+import com.example.demo.dto.PageUtilDto;
+import com.example.demo.entity.Board;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,22 +35,31 @@ public class MemberService {
         return memberDto;
     }
 
-    //전체목록 반환하는 메소드
-    public List<MemberDto> list(){
-        List<Member> mlist = mr.findAll();
+//    //전체목록 반환하는 메소드
+//    public List<MemberDto> list(){
+//        List<Member> mlist = mr.findAll();
+//
+//        //toList()는 자바17버전 사용
+//        //collect(Collectors.toList())는 자바 8~16 버전에서 사용
+////        List<MemberDto> dtoList = mlist.stream().map(m->{
+////            return new MemberDto(m);
+////        }).toList();
+//
+//        //축약1
+//        //mlist.stream().map(m->new MemberDto(m)).toList();
+//
+//        //축약2
+//        List<MemberDto> dtoList=mlist.stream().map(MemberDto::new).toList();
+//        return dtoList;
+//    }
 
-        //toList()는 자바17버전 사용
-        //collect(Collectors.toList())는 자바 8~16 버전에서 사용
-//        List<MemberDto> dtoList = mlist.stream().map(m->{
-//            return new MemberDto(m);
-//        }).toList();
-
-        //축약1
-        //mlist.stream().map(m->new MemberDto(m)).toList();
-
-        //축약2
-        List<MemberDto> dtoList=mlist.stream().map(MemberDto::new).toList();
-        return dtoList;
+    //페이징 처리
+    public PageUtilDto<MemberDto> list(Pageable pageable){
+        Page<Member> page = mr.findAll(pageable);
+        List<MemberDto> list = page.stream().map(m-> new MemberDto(m)).toList();
+        PageUtilDto<MemberDto> dto =
+                new PageUtilDto<>(list,page.getNumber(),page.getTotalPages(),3);
+        return dto;
     }
 
     public MemberDto select(String id){
@@ -69,4 +84,9 @@ public class MemberService {
         }
         return null;
     }
+
+    public void delete(String id){
+        mr.deleteById(id);
+    }
+
 }

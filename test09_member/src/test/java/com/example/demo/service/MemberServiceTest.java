@@ -29,10 +29,10 @@ public class MemberServiceTest {
         System.out.println(m);
     }
 
-    @Test
-    public void list(){
-        service.list().forEach(System.out::println);
-    }
+//    @Test
+//    public void list(){
+//        service.list().forEach(System.out::println);
+//    }
 
     @Test
     public void update(){
