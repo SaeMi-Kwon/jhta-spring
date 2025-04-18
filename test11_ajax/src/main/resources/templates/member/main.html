@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>member/main.html</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<h1 id="title">회원등록</h1>
+	<form method="post" th:action="@{/member/join}">
+		아이디 <input type="text" name="id" id="id"><br>
+		비밀번호 <input type="password" name="pwd" id="pwd"><br>
+		이메일 <input type="text" name="email" id="email"><br>
+		나이 <input type="text" name="age" id="age"><br>
+		<input type="submit" value="가입" id="submit">
+	</form>
+	<br><br>
+	<div>
+		<h1>회원목록</h1>
+		<div id="mlist">
+			<table class="table" id="memlist">
+
+			</table>
+
+		</div>
+	</div>
+
+	<script th:inline="javascript">
+		const a={"id":"aaa", "pwd":"1234"};
+        const d=JSON.stringify(a);  //JSON객체를 문자열로 변환
+        console.log(a);
+        console.log(d);
+
+        const b='{"id":"aaa", "pwd":"1234"}';
+        const c=JSON.parse(b);  //문자열을 JSON객체로 변환
+        console.log(c.id);
+
+
+        // $("form").submit(function(e){
+        //     e.preventDefault();
+        // 	const data = {
+        // 		"id" : $("#id").val(),
+        // 		"pwd" : $("#pwd").val(),
+        // 		"email" : $("#email").val(),
+        // 		"age" : $("#age").val()
+        // 	}
+        // 	//const param=JSON.stringify(data);
+        //
+        // 	let isCheck = $("#submit").val() === "수정";
+        // 	if(isCheck){
+        //         $.ajax({
+        //             url : '/members/update',
+        //             method:'PUT',
+        //             contentType: 'application/json', //JSON문자열 형식으로 보내줘야함
+        //             //data:param,
+        //             data:JSON.stringify(data),
+        //             success:function (res){
+        //                 console.log(res);
+        //                 list();
+        //                 $("#title").html("<h1>회원등록</h1>");
+        //                 $("#id").val("");
+        //                 $("#pwd").val("");
+        //                 $("#email").val("");
+        //                 $("#age").val("");
+        //                 $("#submit").val("등록");
+        //             }
+        //         })
+        //
+        // 	}else {
+        //         $.ajax({
+        //             url : '/member/join',
+        //             method:'POST',
+        //             contentType: 'application/json', //JSON을 파라미터로 전송할때 설정
+        //             //data:param,
+        //             data:JSON.stringify(data),
+        //             success:function (res){
+        //                 console.log(res);
+        //                 list();
+        //             }
+        //         })
+        // 	}
+        // })
+
+
+        //input초기화 함수
+        function resetForm() {
+            $("#id").val("").prop("readonly", false);
+            $("#pwd").val("");
+            $("#email").val("");
+            $("#age").val("");
+            $("#submit").val("등록");
+            $("#title").html("<h1>회원등록</h1>");
+        }
+
+        $("form").submit(function(e){
+            e.preventDefault();
+
+            const data = {
+                "id" : $("#id").val(),
+                "pwd" : $("#pwd").val(),
+                "email" : $("#email").val(),
+                "age" : $("#age").val()
+            }
+
+            const isUpdate = $("#submit").val() === "수정";
+            const url = isUpdate ? '/members/update' : '/member/join';
+            const method = isUpdate ? 'PUT' : 'POST';
+
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(res) {
+                    console.log(res);
+                    list();
+                    resetForm(); // 등록 or 수정 후 초기화
+                }
+            });
+        });
+
+		function list(){
+            $.ajax({
+	            url : '/members',
+	            method: 'GET',
+	            success:function (resp){
+                    $("#memlist").empty();
+                    const th=`
+                        <tr>
+                            <th>아이디</th><th>이메일</th><th>나이</th><th>가입일</th>
+                            <th>삭제</th><th>수정</th>
+                        </tr>
+                    `;
+                    $("#memlist").append(th);
+                    $(resp).each(function (i,m){
+                        const tr=`
+                            <tr>
+                                <td>${m.id}</td><td>${m.email}</td><td>${m.age}</td><td>${m.regdate}</td>
+                                <td><a href="javascript:delMem('${m.id}')">삭제</a></td>
+                                <td><a href="javascript:updateMem('${m.id}')">수정</a></td>
+                            </tr>
+                        `;
+
+                        $("#memlist").append(tr);
+                    })
+	            }
+            })
+		}
+        list();
+
+        function delMem(id){
+            $.ajax({
+	            url : '/members/'+ id,
+	            method : 'DELETE',
+	            success:function (resp){
+                    console.log(resp);
+                    list();
+                    resetForm();  //삭제 후 폼도 초기화되면 좋음
+	            }
+            })
+        }
+
+        function updateMem(id){
+            $.ajax({
+	            url : '/member/' + id,
+	            method : 'GET',
+	            success:function (resp){
+                    //console.log(resp);
+					//$("#title").text("회원수정");
+                    $("#title").html("<h1>회원수정</h1>")  //타이틀 이름 변경
+                    $("#id").val(resp.id).prop("readonly",true); // 아이디는 수정 못하게
+                    $("#email").val(resp.email);
+                    $("#age").val(resp.age);
+                    $("#pwd").val(resp.pwd);
+                    $("#submit").val("수정"); // 버튼 문구도 수정
+	            }
+            })
+        }
+	</script>
+</body>
+</html>

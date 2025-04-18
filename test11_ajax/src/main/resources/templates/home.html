@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>home.html</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<h1>Home!!!!!!!!!!</h1>
+
+	<div>
+		<a th:href="@{/member}">회원관리페이지로 이동</a>
+	</div>
+
+
+	<button id="btn1">버튼</button>
+	<div id="result"></div>
+
+	<!-- 버튼클릭하면 전체 데이터를 얻어와 result에 출력하기 -->
+	<button id="btn2">버튼2</button>
+	<div id="result2"></div>
+
+<script>
+	$("#btn1").click(function (){
+       //alert("hello");
+		$.ajax({
+			url : '/users/hello',
+			dataType:'json',
+			type:'get',
+			success:function (response){
+                console.log(response);
+				const data= `아이디:${response.id}<br>
+                             비밀번호:${response.pwd}<br>
+                             이메일:${response.email}`;
+                $("#result").html(data);
+			}
+		})
+	});
+
+    //방법1
+    $("#btn2").click(function (){
+       $.ajax({
+           url : '/users',
+           dataType: 'json',
+           success:function (data){
+               console.log(data);
+               data.forEach(function (user){
+                   const id = user.id;
+                   const pwd = user.password;
+                   const email = user.email;
+
+                   const html=`아이디: ${id}<br>
+                               비밀번호: ${pwd}<br>
+                               이메일: ${email}<br>`;
+                   $("#result2").append(html);
+               });
+           }
+       })
+    });
+
+
+    //방법2
+    // $("#btn2").click(function (){
+    //     $.ajax({
+    //         url : '/users',
+    //         dataType: 'json',
+    //         success:function (data){
+    //             console.log(data);
+    //             for(let i=0;i<data.length;i++){
+    //                 const d=data[i];
+    //                 const html=`아이디: ${d.id}<br>
+    //                            비밀번호: ${d.password}<br>
+    //                            이메일: ${d.email}<br>`;
+    //                 $("#result2").append(html);
+    //             }
+    //         }
+    //     })
+    // });
+</script>
+</body>
+</html>
