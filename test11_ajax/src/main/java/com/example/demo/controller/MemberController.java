@@ -35,6 +35,7 @@ public class MemberController {
 
     //@RequestBody : 파라미터값 json를 객체로 받는다(JSON를 객체로 변환)
     @PostMapping("/member/join")
+    //ResponseEntity<T> : HTTP 응답 상태 코드, 헤더, 바디를 모두 포함하는 객체
     public ResponseEntity<String> join(@RequestBody MemberDto dto){
         try {
             service.join(dto);

@@ -32,11 +32,11 @@ public class BoardDto {
     public Board toEntity(Member member){
          return Board.builder()
                  .num(num)
-                .title(title)
-                .member(member)  //Member객체를 전달해야 함
-                .content(content)
-                .regdate(regdate)
-                .build();
+                 .title(title)
+                 .member(member)  //Member객체를 전달해야 함
+                 .content(content)
+                 .regdate(regdate)
+                 .build();
 
     }
 }

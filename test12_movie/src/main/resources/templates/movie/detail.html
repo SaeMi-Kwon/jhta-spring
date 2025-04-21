@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+	<meta charset="UTF-8">
+	<title>movie/detail.html</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<style>
+		.active{font-size: 1.3em; color: red}
+	</style>
+</head>
+<body>
+	<div>
+		<h1>영화제목 : [[${movie.title}]]</h1>
+		<p th:text="'영화감독 : ' + ${movie.director}"></p>
+		<p th:text="|줄거리 : ${movie.content}|"></p>
+		<!-- 댓글목록이 보여질 div -->
+		<div id="commList"></div>
+		<!-- 댓글등록 폼 -->
+		<div class="commentsForm">
+			<h3>댓글</h3>
+			<p>작성자<br> <input type="text" id="id"></p>
+			<p>내용<br> <textarea id="comments"></textarea></p>
+			<p><input type="button" id="btnSave" value="등록"></p>
+		</div>
+
+		<!-- [[${movie.mnum}]] : 타임리프 문법이라서 script에서 사용못한다 -->
+		<script th:inline="javascript">
+			const mnum=[[${movie.mnum}]]  //영화번호
+			let currentCnum = null;
+			//alert("영화번호:" + mnum);
+
+            function resetForm(){
+                $("#id").val("").prop("readonly",false);
+                $("#comments").val("");
+                $("#btnSave").val("등록");
+                $("#comments").focus();
+            }
+
+			$("#btnSave").click(function (e){
+				e.preventDefault();
+
+                const isCheck = $("#btnSave").val() == "수정";
+
+                const data = {
+                    "mnum" : mnum,
+                    "id" : $("#id").val(),
+                    "comments" : $("#comments").val()
+                }
+
+                if(isCheck){
+                    data.cnum = currentCnum;
+                }
+
+                const method = isCheck? 'PUT' : 'POST'
+
+				//ajax로 댓글 등록 하기
+				$.ajax({
+					url : '/comments',
+					method : method,
+					contentType : 'application/json',
+					data : JSON.stringify(data),
+					success:function (res){
+						console.log(res);
+                        list();
+						resetForm();   //초기화 함수
+					}
+				})
+			});
+
+
+            // $("#btnSave").click(function (e){
+            //     e.preventDefault();
+			//
+            //     const data = {
+            //         "mnum" : mnum,
+            //         "id" : $("#id").val(),
+            //         "comments" : $("#comments").val()
+            //     }
+			//
+            //     //ajax로 댓글 등록 하기
+            //     $.ajax({
+            //         url : '/comments',
+            //         method : "POST",
+            //         contentType : 'application/json',
+            //         data : JSON.stringify(data),
+            //         success:function (res){
+            //             console.log(res);
+            //             list();
+            //         }
+            //     })
+            // });
+
+
+            function list(page=0){
+                const data = {"mnum": mnum , page : page};
+
+                $.ajax({
+	                url: "/comments",
+	                method: "GET",
+	                data : data,
+	                success:function (res){
+                        console.log(res);
+		                $("#commList").empty();
+
+                        res.list.forEach(function (c,i){  //function(item, index)
+                            //방법1
+                            const div=`<div>
+	                                        번호: ${c.cnum}<br>
+                                            작성자: ${c.id}<br>
+                                            내용: ${c.comments}<br>
+                                            <a href="javascript:delComm(${c.cnum})">삭제</a>
+                                            <a href="javascript:updateComm(${c.cnum})">수정</a>
+                                        </div>`
+
+                            // const div=`<div style="background-color: antiquewhite;margin:3px" class="comm">
+                            //                 작성자 <br>
+							// 				<input type="text" value="${c.id}" class="commid" readonly><br>
+                            //                 내용 <br>
+                            //                 <input type="text" value="${c.comments}" class="commcomments" readonly><br>
+                            //                 <a href="javascript:delComm(${c.cnum})">삭제</a>
+                            //                 <a href="javascript:updateComm(${i},${c.cnum})" class="btnUpdate">수정</a>
+                            //             </div>`
+
+	                        $("#commList").append(div);
+
+                        });
+
+                        //페이징처리
+						if(res.startPage>2){
+                            const prev = `<a href="javascript:list(${res.startPage-1})">이전</a>`;
+                            $("#commList").append(prev);
+                        }
+
+                        for(let i = res.startPage; i <= res.endPage; i++) {
+                            let pageing = "";
+	                        if(i==page){
+		                        pageing = `<a class="active" href="javascript:list(${i})">[${i+1}]</a>`
+                            }else{
+                                pageing = `<a href="javascript:list(${i})">[${i+1}]</a>`
+                            }
+                            $("#commList").append(pageing);
+
+                        }
+
+                        if (res.endPage < res.totalPageCount - 1) {
+                            const next = `<a href="javascript:list(${res.endPage + 1})">다음</a>`;
+                            $("#commList").append(next);
+                        }
+
+	                }
+
+                })
+            }
+            list();
+
+			function delComm(cnum){
+				$.ajax({
+					url: "/comments/" + cnum,
+					method: "DELETE",   //type : "DELETE" (type==method)
+					success:function (res){
+                        //console.log(res);
+                        list();
+					}
+
+				})
+			}
+
+                //방법1
+            function updateComm(cnum) {
+	            $.ajax({
+		            url:"/comments/" + cnum,
+		            method : "GET",
+		            success:function (res){
+                        //console.log(res);
+			            $("#id").val(res.id).prop("readonly",true);
+                        $("#comments").val(res.comments);
+                        $("#btnSave").val("수정");
+                        currentCnum= res.cnum;
+		            }
+	            })
+            }
+
+            // function updateComm(i,cnum) {
+            //     let comm=$(".comm")[i];
+            //     $(comm).find(".commid").prop("readonly",false);
+            //     $(comm).find(".commcomments").prop("readonly",false);
+            //     $(comm).find(".commid").focus();
+            //     $(comm).find(".btnUpdate").prop("text","저장").click(function (){
+            //         const id = $(comm).find(".commid").val();
+            //         const comments = $(comm).find(".commcomments").val();
+            //         let data= {"id": id, "comments": comments, "cnum": cnum, "mnum": mnum};
+			//
+            //         $.ajax({
+            //             url:"/comments",
+            //             data : JSON.stringify(data),
+            //             method : "PUT",
+            //             contentType : 'application/json',
+            //             dataType: 'text',
+            //             success:function (res){
+            //                 console.log(res);
+            //                 $(comm).find("input[type='text']").prop("readonly",true);
+            //                 $(comm).find(".btnUpdate").prop("text","수정");
+            //                 list();
+            //             }
+            //         });
+            //     })
+            // }
+		</script>
+	</div>
+</body>
+</html>
