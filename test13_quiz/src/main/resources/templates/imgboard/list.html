@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>imgboard/list.html</title>
+</head>
+<body>
+<h1>게시판 목록</h1>
+<table border="1">
+	<tr>
+		<th>번호</th><th>작성자</th><th>제목</th><th>등록일</th><th>수정일</th>
+		<th>상세보기</th>
+	</tr>
+	<tr th:each="b:${list}">
+		<td th:text="${b.fnum}"></td>
+		<td th:text="${b.writer}"></td>
+		<td th:text="${b.content}"></td>
+		<td th:text="${#temporals.format(b.createdDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+		<td th:text="${#temporals.format(b.updatedDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+		<td><a th:href="@{/imgboard/detail(fnum=${b.fnum})}">보기</a></td>
+	</tr>
+</table>
+</body>
+</html>

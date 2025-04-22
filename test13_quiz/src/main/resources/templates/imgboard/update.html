@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>imgboard/update.html</title>
+</head>
+<body>
+	<h1>게시글 수정</h1>
+	<form method="post" th:object="${dto}" th:action="@{/imgboard/update}" enctype="multipart/form-data">
+		작성자 <br>
+		<input type="text" th:field="*{writer}" readonly><br>
+		제목 <br>
+		<input type="text" th:field="*{title}"><br>
+		내용 <br>
+		<textarea rows="5" cols="30" th:field="*{content}"></textarea><br>
+		기존 첨부파일 : [[${orgfilename}]] <br>
+		새로운 첨부파일 : <input type="file" name="file1"><br>
+		<input type="hidden" th:field="*{fnum}">
+		<input type="submit" value="수정">
+	</form>
+
+</body>
+</html>

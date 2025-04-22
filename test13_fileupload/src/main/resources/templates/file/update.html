@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>file/update.html</title>
+</head>
+<body>
+	<h1>파일 업데이트</h1>
+	<form method="post" th:object="${dto}" th:action="@{/file/update}" enctype="multipart/form-data">
+		작성자 <br>
+		<input type="text" th:field="*{writer}" readonly><br>
+		제목 <br>
+		<input type="text" th:field="*{title}"><br>
+		내용 <br>
+		<textarea name="content" rows="5" cols="50" th:field="*{content}"></textarea><br>
+		이전 첨부파일 : [[${dto.orgfilename}]]<br>
+		새로운 첨부파일 : <input type="file" name="file1"><br>
+		<input type="hidden" th:field="*{filenum}">
+		<input type="submit" value="수정">
+	</form>
+
+	<a th:href="@{/}">홈</a>
+</body>
+</html>

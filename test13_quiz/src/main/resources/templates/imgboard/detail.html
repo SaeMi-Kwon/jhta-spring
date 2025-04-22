@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>imgboard/detail.html</title>
+</head>
+<body>
+
+<h1>파일정보</h1>
+<table border="1" width="500">
+	<tr>
+		<td>파일번호</td><td th:text="${dto.fnum}"></td>
+	</tr>
+	<tr>
+		<td>작성자</td><td th:text="${dto.writer}"></td>
+	</tr>
+	<tr>
+		<td>제목</td><td th:text="${dto.title}"></td>
+	</tr>
+	<tr>
+		<td>내용</td><td th:text="${dto.content}"></td>
+	</tr>
+	<tr>
+		<td>원본 파일명</td><td th:text="${dto.orgfilename}"></td>
+	</tr>
+	<tr>
+		<td>이미지</td><td><img th:src="|/images/${dto.savefilename}|"></td>
+	</tr>
+	<tr>
+		<td>파일크기</td><td th:text="|${dto.filesize}bytes|"></td>
+	</tr>
+	<tr>
+		<td>등록일</td><td th:text="${#temporals.format(dto.createdDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+	</tr>
+	<tr>
+		<td>수정일</td><td th:text="${#temporals.format(dto.updatedDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+	</tr>
+
+</table>
+<td><a th:href="@{/imgboard/update(fnum=${dto.fnum})}"><button>수정</button></a></td>
+<td><a th:href="@{/imgboard/del(fnum=${dto.fnum})}"><button>삭제</button></a></td>
+<td><a th:href="@{/imgboard/download(fnum=${dto.fnum})}"><button>다운로드</button></a></td>
+
+
+<br><br>
+<a th:href="@{/}">홈</a>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>file/info.html</title>
+	<style>
+		table,tr,td{border: 1px solid black;width: 500px}
+		img{height: 300px;}
+	</style>
+</head>
+<body>
+<h1>파일정보</h1>
+<table>
+	<tr>
+		<td>파일번호</td><td th:text="${dto.filenum}"></td>
+	</tr>
+	<tr>
+		<td>작성자</td><td th:text="${dto.writer}"></td>
+	</tr>
+	<tr>
+		<td>제목</td><td th:text="${dto.title}"></td>
+	</tr>
+	<tr>
+		<td>내용</td><td th:text="${dto.content}"></td>
+	</tr>
+	<tr>
+		<td>원본 파일명</td><td th:text="${dto.orgfilename}"></td>
+	</tr>
+	<tr>
+		<td>파일크기</td><td th:text="${dto.filesize}"></td>
+	</tr>
+	<tr>
+		<td>이미지</td><td><img th:src="|/images/${dto.savefilename}|"></td>
+	</tr>
+</table>
+
+<a th:href="@{/}">홈</a>
+</body>
+</html>

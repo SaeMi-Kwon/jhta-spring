@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>file/list.html</title>
+	<style>
+		table,tr,th,td{border: 1px solid black;width: 800px;}
+	</style>
+</head>
+<body>
+	<h1>파일 리스트</h1>
+	<table>
+		<tr>
+			<th>파일번호</th><th>작성자</th><th>제목</th><th>전송된 파일명</th><th>파일크기</th>
+			<th>상세보기</th><th>삭제</th><th>수정</th><th>다운로드</th>
+		</tr>
+		<tr th:each="f:${list}">
+			<td th:text="${f.filenum}"></td>
+			<td th:text="${f.writer}"></td>
+			<td th:text="${f.title}"></td>
+			<td th:text="${f.orgfilename}"></td>
+			<td th:text="|${f.filesize}byte|"></td>
+			<td><a th:href="@{/file/info(filenum=${f.filenum})}">보기</a></td>
+			<td><a th:href="@{/file/del(filenum=${f.filenum})}">삭제</a></td>
+			<td><a th:href="@{/file/update(filenum=${f.filenum})}">수정</a></td>
+			<td><a th:href="@{/file/download(filenum=${f.filenum})}">다운로드</a></td>
+
+		</tr>
+	</table>
+
+	<a th:href="@{/}">홈</a>
+</body>
+</html>
