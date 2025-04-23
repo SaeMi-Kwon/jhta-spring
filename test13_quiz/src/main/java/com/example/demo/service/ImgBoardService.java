@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ImgBoardDto;
 import com.example.demo.entity.ImgBoard;
+import com.example.demo.repository.BoardUserRepository;
 import com.example.demo.repository.ImgBoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,10 @@ import java.util.List;
 public class ImgBoardService {
 
     private final ImgBoardRepository imgBoardRepository;
+    private final BoardUserRepository boardUserRepository;
 
     public ImgBoardDto insert(ImgBoardDto imgBoardDto){
-        return new ImgBoardDto(imgBoardRepository.save(imgBoardDto.toEntity()));
+        return new ImgBoardDto(imgBoardRepository.save(imgBoardDto.toEntity(boardUserRepository.findById(imgBoardDto.getId()))));
     }
 
     public void delete(long fnum){

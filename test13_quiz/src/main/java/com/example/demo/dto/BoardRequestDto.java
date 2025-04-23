@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class BoardRequestDto {
     private long fnum;
-    private String writer;
+    private String id;
     private String title;
     private String content;
     private MultipartFile file1;

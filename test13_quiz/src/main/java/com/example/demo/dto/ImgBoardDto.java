@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.BoardUser;
 import com.example.demo.entity.ImgBoard;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ImgBoardDto {
     private long fnum;
-    private String writer;
+    private String id;
     private String title;
     private String content;
     private String orgfilename;
@@ -25,7 +26,8 @@ public class ImgBoardDto {
 
     public ImgBoardDto(ImgBoard imgBoard){
         this.fnum = imgBoard.getFnum();
-        this.writer = imgBoard.getWriter();
+        BoardUser user = imgBoard.getBoardUser();
+        this.id = (user != null) ? user.getId() : null;
         this.title = imgBoard.getTitle();
         this.content = imgBoard.getContent();
         this.orgfilename = imgBoard.getOrgfilename();
@@ -35,10 +37,10 @@ public class ImgBoardDto {
         this.updatedDate = imgBoard.getUpdatedDate();
     }
 
-    public ImgBoard toEntity(){
+    public ImgBoard toEntity(BoardUser boardUser){
         return ImgBoard.builder()
                 .fnum(fnum)
-                .writer(writer)
+                .boardUser(boardUser)
                 .title(title)
                 .content(content)
                 .orgfilename(orgfilename)

@@ -59,7 +59,7 @@ public class ImgBoardUpdateController {
         //DTO에 담기
         ImgBoardDto imgBoardDto = ImgBoardDto.builder()
                 .fnum(fnum)
-                .writer(boardRequestDto.getWriter())
+                .id(boardRequestDto.getId())
                 .title(boardRequestDto.getTitle())
                 .content(boardRequestDto.getContent())
                 .orgfilename(orgfile)

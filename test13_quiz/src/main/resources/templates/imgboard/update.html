@@ -8,7 +8,7 @@
 	<h1>게시글 수정</h1>
 	<form method="post" th:object="${dto}" th:action="@{/imgboard/update}" enctype="multipart/form-data">
 		작성자 <br>
-		<input type="text" th:field="*{writer}" readonly><br>
+		<input type="text" th:field="*{id}" readonly><br>
 		제목 <br>
 		<input type="text" th:field="*{title}"><br>
 		내용 <br>

@@ -6,7 +6,10 @@ import com.example.demo.entity.ImgBoard;
 import com.example.demo.service.ImgBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +28,9 @@ public class ImgBoardInsertController {
     private String path;
 
     @GetMapping("/imgboard/insert")
-    public void insertForm(){}
+    public void insertForm(@AuthenticationPrincipal UserDetails user, Model model){
+        model.addAttribute("user",user);
+    }
 
     @PostMapping("/imgboard/insert")
     public String insert(BoardRequestDto boardRequestDto) throws IOException {
@@ -41,7 +46,7 @@ public class ImgBoardInsertController {
         file.transferTo(fileSave);
 
         ImgBoardDto dto= ImgBoardDto.builder()
-                .writer(boardRequestDto.getWriter())
+                .id(boardRequestDto.getId())
                 .title(boardRequestDto.getTitle())
                 .content(boardRequestDto.getContent())
                 .orgfilename(orgfile)

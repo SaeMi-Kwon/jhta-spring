@@ -13,12 +13,14 @@
 	</tr>
 	<tr th:each="b:${list}">
 		<td th:text="${b.fnum}"></td>
-		<td th:text="${b.writer}"></td>
+		<td th:text="${b.id}"></td>
 		<td th:text="${b.content}"></td>
 		<td th:text="${#temporals.format(b.createdDate,'yyyy-MM-dd HH:mm:ss')}"></td>
 		<td th:text="${#temporals.format(b.updatedDate,'yyyy-MM-dd HH:mm:ss')}"></td>
 		<td><a th:href="@{/imgboard/detail(fnum=${b.fnum})}">보기</a></td>
 	</tr>
 </table>
+
+<a th:href="@{/}">홈</a>
 </body>
 </html>

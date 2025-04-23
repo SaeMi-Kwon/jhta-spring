@@ -23,7 +23,9 @@ import java.time.LocalDateTime;
 public class ImgBoard {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long fnum;
-    private String writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private BoardUser boardUser;
     private String title;
     private String content;
     private String orgfilename;
