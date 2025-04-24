@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragment/layout::layout('상품페이지',~{this::item})}">
+
+	<div th:fragment="item">
+		<div style="background-color: burlywood;width: 800px;height: 500px;">
+			<h2>상품 목록</h2>
+			<ul>
+				<li><a href="">상품1</a></li>
+				<li><a href="">상품2</a></li>
+				<li><a href="">상품3</a></li>
+			</ul>
+		</div>
+	</div>
+
+</th:block>
+
+</html>

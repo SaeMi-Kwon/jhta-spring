@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragment/layout::layout('회원가입페이지',~{this::content},~{this::script})}">
+
+    	<div th:fragment="content">
+		    <button id="join1">회원가입</button>
+		    <button id="join2">관리자가입</button>
+
+		    <div id="memberjoin">
+			    <h1>일반 회원가입</h1>
+			    <form th:action="@{/member/join}" method="post">
+				    <label for="username1">아이디</label><br>
+				    <input type="text" id="username1" name="username" /><br>
+				    <label for="password1">비밀번호</label><br>
+				    <input type="password" id="password1" name="password" /><br>
+				    <label for="email1">이메일</label><br>
+				    <input type="text" id="email1" name="email" /><br>
+				    <input type="hidden" name="role" value="MEMBER">
+				    <input type="submit" value="가입">
+			    </form>
+		    </div>
+
+		    <div id="adminjoin">
+			    <h1>관리자 회원가입</h1>
+			    <form th:action="@{/member/join}" method="post">
+				    <label for="username2">아이디</label><br>
+				    <input type="text" id="username2" name="username" /><br>
+				    <label for="password2">비밀번호</label><br>
+				    <input type="password" id="password2" name="password" /><br>
+				    <label for="email2">이메일</label><br>
+				    <input type="text" id="email2" name="email" /><br>
+				    <input type="hidden" name="role" value="ADMIN">
+				    <input type="submit" value="가입">
+			    </form>
+		    </div>
+	    </div>
+
+	<th:block th:fragment="script">
+		<script th:inline="javascript">
+            $(function () {
+                $("#memberjoin").hide();
+                $("#adminjoin").hide();
+
+                $("#join1").click(function () {
+                    $("#memberjoin").show();
+                    $("#adminjoin").hide();
+                });
+
+                $("#join2").click(function () {
+                    $("#memberjoin").hide();
+                    $("#adminjoin").show();
+                });
+            });
+		</script>
+	</th:block>
+
+</th:block>
+</html>

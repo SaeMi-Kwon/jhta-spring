@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
+    //CustomUserDetailsService에 정의한 메소드
+
     @GetMapping("/")
     //@AuthenticationPrincipal : 시큐리티가 사용하는 컨텍스트영역에서 UserDetails객체 얻어오기
     //로그인하지 않았다면 null, 로그인했다면 사용자 정보가 자동으로 주입

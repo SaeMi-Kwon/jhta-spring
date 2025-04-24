@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>fragmentTest.html</title>
+</head>
+<body>
+	<div th:replace="~{fragment/sample1::header}"></div>
+
+	<h1 style="color: blue">fragmentTest.html파일입니다...</h1>
+
+	<!-- 프래그먼트 삽입하기 -->
+	<div th:insert="~{fragment/sample1::hello}"></div>
+	<div th:replace="~{fragment/sample1::getMsg('hello world!!')}"></div>
+
+	<div th:replace="~{fragment/sample1::getFragment(~{this::content})}">
+		<div th:fragment="content">
+			<h1 style="color: blueviolet">나는 삽입되는 프래그먼트 입니다...</h1>
+		</div>
+	</div>
+
+	<!-- 프래그먼트를 파라미터로 전달하는 예제코드 작성해 보세요 -->
+	<div th:replace="~{fragment/sample1::getFooter(~{this::c})}">
+		<div th:fragment="c">
+			<h1>c 프래그먼트 입니다.</h1>
+		</div>
+	</div>
+
+</body>
+</html>

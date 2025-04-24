@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>fragment/sample1.html</title>
+</head>
+<body>
+	<div th:fragment="hello">
+		<h1>Hello</h1>
+		<div style="background-color: bisque; width: 300px;height: 200px;">
+			반갑습니다
+		</div>
+	</div>
+
+	<!-- header영역에 보여질 프래그먼트 정의하기 -->
+	<div th:fragment="header">
+		<div style="background-color: aquamarine; width: 600px;height: 150px;">
+			<h3>헤더 입니다</h3>
+			<ul>
+				<li><a href="">로그인</a></li>
+				<li><a href="">회원가입</a></li>
+				<li><a href="">게시판</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div th:fragment="getMsg(msg)">
+		<h2>나도 프래그먼트</h2>
+		<div>전달받은 메시지 : [[${msg}]]</div>
+	</div>
+
+	<div th:fragment="getFragment(content)">
+		<div style="background-color: deepskyblue; width: 400px;height: 200px;">
+			<h1>프래그먼트 삽입..</h1>
+		</div>
+		<div th:replace="${content}"></div>
+	</div>
+
+
+	<div th:fragment="getFooter(c)">
+		<div style="background-color: chartreuse;width: 600px;height: 150px;">
+			<ul>
+				<li><h3>Footer 부분입니다</h3></li>
+				<li><a href="">회사소개</a></li>
+				<li><a href="">찾아오시는 길</a></li>
+				<li><a href="">고객센터</a></li>
+			</ul>
+		</div>
+
+		<div th:replace="${c}"></div>
+	</div>
+
+</body>
+</html>

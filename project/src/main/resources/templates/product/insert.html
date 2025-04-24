@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragment/layout::layout('로그인페이지',~{this::content},~{this::script})}">
+
+	<div th:fragment="content">
+		<h1>상품 등록</h1>
+		<form method="post" th:action="@{/product/insert}" enctype="multipart/form-data">
+			상품명 :
+			<input type="text" name="name"><br>
+			가격 :
+			<input type="number" name="price"><br>
+			재고수량 :
+			<input type="number" name="amount"><br>
+			이미지 :
+			<input type="file" name="img"><br>
+
+			<input type="submit" value="등록">
+		</form>
+	</div>
+
+	<th:block th:fragment="script">
+		<script th:inline="javascript"></script>
+	</th:block>
+
+
+</th:block>
+</html>

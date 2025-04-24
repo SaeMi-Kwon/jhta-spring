@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragment/layout::layout('로그인페이지',~{this::content},~{this::script})}">
+
+	<div th:fragment="content">
+
+		<div th:each="p : ${list}"
+		     style="border: 1px solid #ddd; padding: 15px; width: 220px; text-align: center;">
+
+			<a th:href="@{/cartitem/insert(pid=${p.pid})}">
+				<img th:src="|/images/${p.img}|" alt="상품 이미지"
+				     style="width: 100%; height: 150px; object-fit: cover;" />
+			</a>
+
+			<h3 th:text="${p.name}">상품명</h3>
+			<p style="font-weight: bold;" th:text="|${p.price}원|">가격</p>
+		</div>
+	</div>
+
+	<th:block th:fragment="script">
+		<script th:inline="javascript"></script>
+	</th:block>
+
+
+</th:block>
+</html>
