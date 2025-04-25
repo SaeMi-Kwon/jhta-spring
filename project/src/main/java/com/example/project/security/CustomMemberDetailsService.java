@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 public class CustomMemberDetailsService implements UserDetailsService {
 
     @Autowired
-    private MemberRepository mr;
+    private MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //엔티티(Entity)를 직접 사용
-        Member member = mr.findByUsername(username);
+        Member member = memberRepository.findByUsername(username);
         if(member==null){
             throw new UsernameNotFoundException("존재하지 않는 아이디 또는 비밀번호 입니다");
         }

@@ -14,4 +14,14 @@ public class HomeController {
         model.addAttribute("mem",mem);
         return "home";
     }
+
+    @GetMapping("/productsmove")
+    public String productPage(){
+        return "products";
+    }
+
+    @GetMapping("/cart/view")
+    public String cartList(){
+        return "cart";
+    }
 }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragment/layout::layout('상품페이지',~{this::content},~{this::script})}">
+
+	<div th:fragment="content">
+		<h1>상품목록</h1>
+		<div id="productsList"></div>
+	</div>
+
+	<th:block th:fragment="script">
+		<script th:inline="javascript">
+
+			function plist(){
+                $.ajax({
+	                url : "/products",
+	                method : "GET",
+	                success:function (resp){
+                        let count = 0;
+                        $("#productsList").empty();
+
+                        $(resp).each(function (i,p){
+                            //console.log(p);
+
+                            const html = `<div style="text-align: center;display: inline-block; margin: 10px;">
+								<img src="/images/${p.img}" alt="상품 이미지"
+										style="width: 200px; height: 180px; object-fit: cover;" />
+								<p>${p.name}</p>
+								<p style="font-weight: bold;">${p.price}원</p>
+								<input type="number" id="quantity${p.pid}" value="1" min="1" style="width: 50px;"/>
+								<button onclick="addCart(${p.pid}, ${p.price})">Add to Cart</button>
+
+                            </div>`;
+
+                            $("#productsList").append(html);
+                            count++;
+
+                            if(count % 5 === 0) {
+                                $("#productsList").append('<br>');
+                            }
+                        });
+	                }
+                });
+			}
+			plist();
+
+            function addCart(pid,price){
+                let quantity = $("#quantity" + pid).val();
+
+                $.ajax({
+	                url : "/cart/add",
+                    method: "POST",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        pid: pid,
+                        price: price,
+                        quantity: quantity
+                    }),
+	                success:function (resp){
+                        if (confirm("장바구니에 담았습니다.\n장바구니로 이동하시겠습니까?")) {
+                            location.href = "/cart/view"; // 장바구니 페이지로 이동
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            alert("로그인이 필요합니다.");
+                            location.href = "/member/login";
+                        } else {
+                            console.log("오류:", xhr.responseText);
+                        }
+                    }
+                });
+            }
+
+		</script>
+	</th:block>
+
+
+</th:block>
+</html>

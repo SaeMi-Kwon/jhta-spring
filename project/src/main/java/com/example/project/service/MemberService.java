@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
-    private final MemberRepository mr;
+    private final MemberRepository memberRepository;
 
     //회원가입
     public void insert(MemberDto memberDto){
@@ -22,12 +22,12 @@ public class MemberService {
         String pwd = mm.getPassword();
         String encodedPwd=passwordEncoder.encode(pwd);
         mm.setPassword(encodedPwd);
-        mr.save(mm);
+        memberRepository.save(mm);
     }
 
     //로그인
     public boolean isMember(String username,String password){
-        String encodedPwd=mr.findByUsername(username).getPassword();
+        String encodedPwd=memberRepository.findByUsername(username).getPassword();
         if(passwordEncoder.matches(password,encodedPwd)){
             return true;
         }

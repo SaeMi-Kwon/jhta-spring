@@ -1,6 +1,7 @@
 package com.example.project.dto;
 
 import com.example.project.entity.Product;
+import jakarta.persistence.Lob;
 import lombok.*;
 
 import java.sql.Date;

@@ -1,9 +1,6 @@
 package com.example.project.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,6 +19,7 @@ public class Product {
     private String name;
     private int price;
     private int amount;  //재고수량
+    @Lob
     private String img;  //이미지
     @CreationTimestamp
     private Date regdate;

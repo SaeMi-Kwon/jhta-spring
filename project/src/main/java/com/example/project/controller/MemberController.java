@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class MemberController {
 
-    private final MemberService ms;
+    private final MemberService memberService;
 
     @GetMapping("/join")
     public void joinForm(){}
 
     @PostMapping("/join")
     public String join(MemberDto dto, Model model){
-        ms.insert(dto);
+        memberService.insert(dto);
         return "home";
     }
 

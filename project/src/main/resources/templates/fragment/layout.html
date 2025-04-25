@@ -1,49 +1,67 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:fragment="layout(title,content,script)">
 	<head>
 		<meta charset="UTF-8">
 		<title th:text="${title}">fragment/layout.html</title>
+		<style>
+			a{
+                text-decoration: none;
+                color: #333;
+			}
+		</style>
 	</head>
 	<body>
 
 	<header>
-	<ul>
-		<div th:if="${mem==null}">
+	<ul style="list-style: none; display: flex; gap: 15px; padding: 10px;">
+
+		<li><a th:href="@{/member/join}">회원가입</a></li>
+		<!-- 로그인 안 했을 때 -->
+		<div sec:authorize="isAnonymous()" style="display: flex; gap: 15px;">
 			<li><a th:href="@{/member/login}">로그인</a></li>
-			<li><a href="">장바구니</a></li>
+
 		</div>
 
-		<li th:if="${mem!=null}">
-			<form th:action="@{/logout}" method="post">
-				<span th:text="|${mem.username}님 반갑습니다|"></span>
+		<!-- 로그인 했을때 -->
+		<div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 10px;">
+			<form th:action="@{/logout}" method="post" style="display: flex; align-items: center; gap: 10px;">
 				<input type="submit" value="로그아웃"> <!-- 로그아웃은 post방식으로 설정 -->
 			</form>
-		</li>
-		<li><a th:href="@{/member/join}">회원가입</a></li>
+
+			<li><a th:href="@{/cart/view}">장바구니</a></li>
+		</div>
 
 
-		<li><a th:href="@{/product/list}">상품페이지</a></li>
-		<li><a th:href="@{/product/insert}">상품등록</a></li>
+		<li><a th:href="@{/productsmove}">상품페이지</a></li>
+
+		<!-- ROLE_ADMIN 권한 있을 때만 보임 -->
+		<div sec:authorize="hasAuthority('ADMIN')">
+			<li><a th:href="@{/product/list}">관리자상품페이지</a></li>
+			<li><a th:href="@{/product/insert}">상품등록</a></li>
+		</div>
 
 	</ul>
 	</header>
 
 	<!-- 내용삽입 -->
-	<div style="background-color: bisque;height: 600px;">
+	<div style="background-color: bisque;">
 		<div th:replace="${content}"></div>
 	</div>
 
-	<footer>
-		<ul>
-			<li><a href="">회사소개</a></li>
-			<li><a href="">찾아오시는 길</a></li>
-			<li><a href="">고객센터</a></li>
+	<footer style="background-color: #f8f8f8; padding: 20px 0; text-align: center;">
+		<ul style="list-style: none; display: flex; justify-content: center; gap: 30px; margin: 0; padding: 0;">
+			<li><a href="#">회사소개</a></li>
+			<li><a href="#">찾아오시는 길</a></li>
+			<li><a href="#">고객센터</a></li>
 		</ul>
 	</footer>
 
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-	<th:block th:replace="${script}"></th:block>
+	<th:block th:replace="${script}">
+
+	</th:block>
 
 	</body>
 

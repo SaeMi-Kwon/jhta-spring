@@ -1,7 +1,9 @@
 package com.example.project.dto;
 
+
 import com.example.project.entity.Cart;
 import com.example.project.entity.Member;
+import com.example.project.entity.Product;
 import lombok.*;
 
 import java.sql.Date;
@@ -12,21 +14,31 @@ import java.sql.Date;
 @Setter
 @Builder
 public class CartDto {
-    private int cid;
-    private int mid;  //member id
-    private Date regdate;
+    private int cmid;
+    private int mid; //사용자 id
+    private int pid;  //상품id
+    private int quantity;   //담는거 수량
+    private int totalprice;  //총 가격
+    private Date added_at;
+
 
     public CartDto(Cart cart){
-        this.cid=cart.getCid();
-        this.mid=cart.getMember().getMid();
-        this.regdate=cart.getRegdate();
+        this.cmid = cart.getCmid();
+        this.mid = cart.getMember().getMid();
+        this.pid = cart.getProduct().getPid();
+        this.quantity = cart.getQuantity();
+        this.totalprice = cart.getQuantity() * cart.getProduct().getPrice();
+        this.added_at = cart.getAdded_at();
     }
 
-    public Cart toEntity(Member member){
+    public Cart toEntity(Member member, Product product){
         return Cart.builder()
-                .cid(cid)
+                .cmid(cmid)
                 .member(member)
-                .regdate(regdate)
+                .product(product)
+                .quantity(quantity)
+                .totalprice(quantity * product.getPrice())
+                .added_at(added_at)
                 .build();
     }
 }
