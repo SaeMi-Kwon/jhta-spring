@@ -2,6 +2,8 @@ package com.example.project.service;
 
 import com.example.project.dto.CartDto;
 import com.example.project.dto.CartProductDto;
+import com.example.project.dto.CartRequestDto;
+import com.example.project.dto.CartUpdateDto;
 import com.example.project.entity.Cart;
 import com.example.project.entity.Member;
 import com.example.project.entity.Product;
@@ -28,24 +30,53 @@ public class CartService {
     private final MemberRepository memberRepository;
 
     //장바구니 추가
-    public void insert(CartDto cartDto){
+    public void insert(CartRequestDto cartRequestDto, int mid) {
         //상품과 사용자 정보 가져오기
-        Optional<Product> product = productRepository.findById(cartDto.getPid());
-        Optional<Member> member = memberRepository.findById(cartDto.getMid());
+        Product product = productRepository.findById(cartRequestDto.getPid())
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+        Member member = memberRepository.findById(mid)
+                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
 
-        if(product.isPresent() && member.isPresent()){
-            Product p = product.get();
-            Member m = member.get();
-            Cart cart = cartDto.toEntity(m,p);
-            cartRepository.save(cart);
-        }
-        System.out.println("장바구니 저장 실패!");
+        Cart cart = Cart.builder()
+                .product(product)
+                .member(member)
+                .quantity(cartRequestDto.getQuantity())
+                .totalprice(product.getPrice() * cartRequestDto.getQuantity())
+                .build();
 
+        cartRepository.save(cart);
     }
+
 
     // 장바구니와 상품 정보를 조인하여 가져오기
     public List<CartProductDto> list(int mid){
         return cartRepository.findCartWithProductsByMid(mid);
     }
 
+    //상품 조회
+    public CartDto select(int cmid){
+        Optional<Cart> cart = cartRepository.findById(cmid);
+        if(cart.isPresent()){
+            Cart c = cart.get();
+            return new CartDto(c);
+        }
+        return null;
+    }
+
+    //장바구니 상품 수정하기
+    public void update(CartUpdateDto updateDto) {
+        Cart cart = cartRepository.findById(updateDto.getCmid())
+                .orElseThrow(() -> new IllegalArgumentException("장바구니 항목 없음"));
+
+        int total = updateDto.getQuantity() * updateDto.getPrice();
+        cart.setQuantity(updateDto.getQuantity());
+        cart.setTotalprice(total);
+    }
+
+
+    //장바구니 상품 삭제하기
+    public void deleteItems(List<Integer> cmidList) {
+        //이벤트처리 사용 못하는 대신 성능면에서 빠름
+        cartRepository.deleteAllByIdInBatch(cmidList);
+    }
 }

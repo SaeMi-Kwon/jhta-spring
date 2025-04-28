@@ -37,10 +37,7 @@ public class SecurityConfig {
                     .requestMatchers("/member/update").authenticated()
                     .requestMatchers("/member/delete").authenticated()
                     .requestMatchers("/cart/**").authenticated()
-                    .requestMatchers("/product/insert").hasAuthority("ADMIN")
-                    .requestMatchers("/product/update").hasAuthority("ADMIN")
-                    .requestMatchers("/product/delete").hasAuthority("ADMIN")
-                    .requestMatchers("/product/list").hasAuthority("ADMIN")
+                    .requestMatchers("/product/**").hasAuthority("ADMIN")
                     .anyRequest().permitAll();
         });
 

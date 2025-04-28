@@ -1,9 +1,7 @@
 package com.example.project.controller;
 
-import com.example.project.dto.CartDto;
-import com.example.project.dto.CartProductDto;
-import com.example.project.dto.CartRequestDto;
-import com.example.project.dto.ProductDto;
+import com.example.project.dto.*;
+import com.example.project.entity.Cart;
 import com.example.project.security.CustomMemberDetails;
 import com.example.project.service.CartService;
 import com.example.project.service.ProductService;
@@ -33,13 +31,7 @@ public class CartController {
             ProductDto productDto = productService.select(cartRequestDto.getPid());
             int mid = customMemberDetails.getMid();
 
-            CartDto cartDto = CartDto.builder()
-                    .mid(mid)
-                    .pid(productDto.getPid())
-                    .quantity(cartRequestDto.getQuantity())
-                    .build();
-
-            cartService.insert(cartDto);
+            cartService.insert(cartRequestDto,mid);
             return new ResponseEntity<>("success", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("fail", HttpStatus.EXPECTATION_FAILED);
@@ -57,6 +49,27 @@ public class CartController {
     }
 
 
-    //@DeleteMapping("/del")
+    // 수량 변경
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@RequestBody CartUpdateDto cartUpdateDto) {
+        try {
+            cartService.update(cartUpdateDto);
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteCartItems(@RequestBody List<Integer> cmidList) {
+        try {
+            cartService.deleteItems(cmidList);
+
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("fail", HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
 
 }

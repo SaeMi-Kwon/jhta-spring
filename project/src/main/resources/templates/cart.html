@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{fragment/layout::layout('로그인페이지',~{this::content},~{this::script})}">
+<th:block th:replace="~{fragment/layout::layout('장바구니 페이지',~{this::content},~{this::script})}">
 
 	<div th:fragment="content">
 		<h1>장바구니</h1>
-		<div id="cartList"></div>
+		<button onclick="selectAll()">전체 선택</button>
+		<button onclick="delSelect()">삭제</button><br>
+		<div id="cartList"></div><br>
+
+		<p>총 합계: <span id="totalPrice">0</span>원</p>
+		<button onclick="pay()">결제하기</button><br>
 	</div>
 
 	<th:block th:fragment="script">
@@ -28,21 +33,33 @@
 						items.forEach(t => {
                             const html = `
                                 <div id="cart${t.cmid}" class="cart-item">
-                                <input type="checkbox" class="cart-check" value="${t.cmid}">
-                                <img src="/images/${t.img}" alt="${t.name}" width="100">
+                                <input type="checkbox" class="cart-check" value="${t.cmid}" id="checkbox${t.cmid}">
+                                    <label for="checkbox${t.cmid}">
+                                        <img src="/images/${t.img}" alt="${t.name}" width="100">
+                                    </label>
                                 <p>상품명: ${t.name}</p>
-                                <p>가격: ${t.price}원</p>
+
                             <p>
                                 수량:
-                                <input type="number" id="quantity-${t.cmid}" value="${t.quantity}" min="1" style="width: 60px;">
-                                    <button onclick="updateQuantity(${t.cmid})">수량변경</button>
+                                <input type="number" id="quantity${t.cmid}" value="${t.quantity}" min="1" style="width: 60px;">
+                                    <button onclick="updateQuantity(${t.cmid},${t.price})">수량변경</button>
                             </p>
-                            <p>총 가격: ${t.totalprice}원</p>
+                            <p>총 가격: <span id="totalPrice${t.cmid}">${t.totalprice}</span>원</p>
                             </div>
                             <hr>`;
 
                             $("#cartList").append(html);
-						})
+						});
+
+                        //처음 장바구니를 로드한 후 합산 계산
+                        calcTotal();
+
+                        // 체크박스 상태 변경 시 합계 재계산
+                        $(".cart-check").change(function() {
+                            calcTotal();
+                        });
+
+
 	                },
                     error: function(xhr) {
                         if (xhr.status === 401) {
@@ -57,8 +74,90 @@
 			}
             clist();
 
+            function updateQuantity(cmid,price){
+                const quantity = $("#quantity"+cmid).val();
+
+                $.ajax({
+	                url: "/cart/update",
+	                method: "PUT",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        cmid: cmid,
+                        quantity: quantity,
+	                    price : price
+                    }),
+                    success: function (resp) {
+                        alert("수량이 변경되었습니다.");
+                        clist();  //다시 장바구니 리스트를 새로고침
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            alert("로그인이 필요합니다.");
+                            location.href = "/member/login";
+                        } else {
+                            console.log("오류:", xhr.responseText);
+                        }
+                    }
+                })
+            }
+
+            function delSelect(){
+                //체크된 체크박스들의 값을 배열로 만듬
+                const selected = [];
+                $(".cart-check:checked").each(function () {
+                    selected.push(Number($(this).val()));
+                });
+
+                if (selected.length === 0) {
+                    alert("삭제할 항목을 선택하세요.");
+                    return;
+                }
+
+                if (!confirm("선택한 상품을 삭제하시겠습니까?")) {
+                    // 취소 버튼을 눌렀을 때 체크된 체크박스를 모두 해제
+                    $(".cart-check:checked").prop("checked", false);
+                    return;
+                }
+
+                $.ajax({
+                    url: "/cart/delete",
+                    method: "DELETE",
+                    contentType: "application/json",
+                    data: JSON.stringify(selected),
+                    success: function (resp) {
+                        alert("선택한 항목이 삭제되었습니다.");
+                        clist(); // 삭제 후 리스트 새로고침
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 401) {
+                            alert("로그인이 필요합니다.");
+                            location.href = "/member/login";
+                        } else {
+                            console.log("오류:", xhr.responseText);
+                        }
+                    }
+                });
+            }
+
+            //전체 선택/해제 기능 구현
+            function selectAll() {
+                const allChecked = $(".cart-check").length === $(".cart-check:checked").length;
+                $(".cart-check").prop("checked", !allChecked);  //체크 상태를 반전시킴
+                calcTotal();
+            }
+
+            function calcTotal() {
+                let total = 0;
+                $(".cart-check:checked").each(function() {
+                    const cmid = $(this).val();
+                    const totalprice = parseInt($("#totalPrice" + cmid).text());
+                    total += totalprice;  // 선택된 항목들의 총합 계산
+                });
+                $("#totalPrice").text(total);  // 총합 금액을 화면에 표시
+            }
 
 		</script>
+
 	</th:block>
 
 

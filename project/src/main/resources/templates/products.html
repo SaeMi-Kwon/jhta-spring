@@ -28,7 +28,7 @@
 								<p>${p.name}</p>
 								<p style="font-weight: bold;">${p.price}원</p>
 								<input type="number" id="quantity${p.pid}" value="1" min="1" style="width: 50px;"/>
-								<button onclick="addCart(${p.pid}, ${p.price})">Add to Cart</button>
+								<button onclick="addCart(${p.pid}, ${p.price})">장바구니 추가</button>
 
                             </div>`;
 
@@ -63,6 +63,7 @@
                         if (confirm("장바구니에 담았습니다.\n장바구니로 이동하시겠습니까?")) {
                             location.href = "/cart/view"; // 장바구니 페이지로 이동
                         }
+                        $("#quantity"+ pid).val(1);
                     },
                     error: function(xhr) {
                         if (xhr.status === 401) {

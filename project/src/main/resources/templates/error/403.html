@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragment/layout::layout('로그인페이지',~{this::content},~{this::script})}">
+
+	<div th:fragment="content">
+
+		<h1>⚠️ 권한이 없습니다</h1>
+
+	</div>
+
+	<th:block th:fragment="script">
+		<script th:inline="javascript">
+            //3초 후 홈으로 이동
+            setTimeout(function() {
+                location.href = "/";
+            }, 3000);
+		</script>
+	</th:block>
+
+
+</th:block>
+</html>

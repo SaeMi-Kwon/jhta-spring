@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragment/layout::layout('관리자 상품수정페이지',~{this::content},~{this::script})}">
+
+	<div th:fragment="content">
+		<h1>상품 수정</h1>
+		<form method="post" th:action="@{/product/update}" enctype="multipart/form-data">
+			상품명 : <input type="text" name="name" th:value="${dto.name}"><br>
+			가격 : <input type="number" name="price" th:value="${dto.price}"><br>
+			재고수량 : <input type="number" name="amount" th:value="${dto.amount}"><br>
+			이미지 : <input type="file" name="img"><br>
+			<input type="hidden" name="pid" th:value="${dto.pid}">
+			<input type="submit" value="수정">
+		</form>
+	</div>
+
+	<th:block th:fragment="script">
+		<script th:inline="javascript"></script>
+	</th:block>
+
+</th:block>
+</html>
