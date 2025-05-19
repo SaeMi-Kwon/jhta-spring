@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 //Spring Security는 인증(Authentication)과 인가(Authorization)를 담당하는 보안 프레임워크
-//로그인 과정에서 사용자의 정보를 확인하고, 권한을 체크하는데 이 때 사용하는 객체가 바로 UserDetails
+//로그인 과정에서 사용자의 정보를 확인하고, 권한을 체크하는데 이때 사용하는 객체가 바로 UserDetails
 
 
 // 추상메소드 오버라이딩 ctrl + i
